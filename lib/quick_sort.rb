@@ -12,56 +12,63 @@ class QuickSort
 
   # In-place.
   def self.sort2!(array, start = 0, length = array.length, &prc)
+    prc ||= Proc.new do |el1, el2|
+      (el1 <=> el2)
+    end
     #Call partition on the input array
+    return array if length <= 1
 
     #Recursively call sort on the left and right half
     #of the array, passing in the start index and the
     #"length" which is really the ending index
+    # puts "---------------"
+    # puts "Array Before Pivot: "
+    # print array[start..length]
+    # puts " "
+    pivot = partition(array, start, length, &prc)
+    # puts "---------------"
+    # puts "Array After Pivot: "
+    # print array[start..length]
+    # puts " "
+    new_length = length - pivot
 
-    #
+    sort2!(array, pivot - 1, new_length, &prc)
+    # puts "---------------"
+    # puts "Array After First Sort: "
+    # print array[start..length]
+    # puts " "
+    sort2!(array, pivot, new_length, &prc)
+    # puts "---------------"
+    # puts "Array After Second Sort: "
+    # print array[start..length]
+    # puts " "
+    # The partition method will return to you the pivot index
+    array
   end
 
   def self.partition(array, start, length, &prc)
     prc ||= Proc.new do |el1, el2|
       (el1 <=> el2)
     end
-    puts "Starting Array: "
-    print array
-    puts " "
     #This will swap elements in place
     # #Pick a random pivot point
     # gen = Random.new
     # pivot_idx = gen.rand(start...length)
     pivot_idx = (length / 2) + start
-    print "Pivot Index: "
-    puts pivot_idx
 
     swap(array, start, pivot_idx)
-    puts "Array after first swap: "
-    print array
-    puts " "
     #Note a 'barrier', everything to the left is greater than the
     # pivot, everything to the right is less than or equal to
     barrier_idx = start + 1
     (length - 1).times do |num|
       idx = num + start + 1
-      puts "--------------"
-      print "Index: "
-      puts idx
-      print "Start: "
-      puts array[start]
-      print "Eval: "
-      puts prc.call(array[start], array[idx])
-      puts "--------------"
+
       if prc.call(array[start], array[idx]) != -1 && barrier_idx < (length + start)
         swap(array, barrier_idx, idx)
         barrier_idx += 1
       end
     end
 
-    puts "Array after Major Swapping: "
-    print array
-    puts " "
     # if while iterating, an element is less than the pivot
     # swap it with the element that is to the right of the barrier
     # and move the barrier over one
@@ -70,12 +77,8 @@ class QuickSort
     #be around the center of the elements. You then want to swap
     #the pivot(which should have been the first element) with the
     #element directly to the right of the barrier
-          print "Barrier Idx"
-          puts barrier_idx
     swap(array, barrier_idx - 1, start)
-    puts "Array after Final Swap: "
-    print array
-    puts " "
+
     pivot_idx
   end
 end
