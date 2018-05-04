@@ -21,29 +21,14 @@ class QuickSort
     #Recursively call sort on the left and right half
     #of the array, passing in the start index and the
     #"length" which is really the ending index
-    # puts "---------------"
-    # puts "Array Before Pivot: "
-    # print array[start..length]
-    # puts " "
+
     pivot = partition(array, start, length, &prc)
-    # puts "---------------"
-    # puts "Array After Pivot: "
-    # print array[start..length]
-    # puts " "
-    new_length = length - pivot
+
+    new_length = length / 2
 
     sort2!(array, pivot - 1, new_length, &prc)
-    # puts "---------------"
-    # puts "Array After First Sort: "
-    # print array[start..length]
-    # puts " "
     sort2!(array, pivot, new_length, &prc)
-    # puts "---------------"
-    # puts "Array After Second Sort: "
-    # print array[start..length]
-    # puts " "
     # The partition method will return to you the pivot index
-    array
   end
 
   def self.partition(array, start, length, &prc)

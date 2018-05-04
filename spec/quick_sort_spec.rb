@@ -36,8 +36,8 @@ describe QuickSort do
       num_comparisons = 0
       QuickSort.sort2!(arr) do |el1, el2|
         num_comparisons += 1
-        print "Number of Comp: "
-        puts num_comparisons
+        # print "Number of Comp: "
+        # puts num_comparisons
         el1 <=> el2
       end
 
