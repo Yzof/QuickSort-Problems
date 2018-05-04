@@ -22,7 +22,6 @@ class QuickSort
   end
 
   def self.partition(array, start, length, &prc)
-    return start if start == length
     prc ||= Proc.new do |el1, el2|
       (el1 <=> el2)
     end
@@ -33,7 +32,7 @@ class QuickSort
     # #Pick a random pivot point
     # gen = Random.new
     # pivot_idx = gen.rand(start...length)
-    pivot_idx = length / 2
+    pivot_idx = (length / 2) + start
     print "Pivot Index: "
     puts pivot_idx
 
@@ -44,8 +43,17 @@ class QuickSort
     #Note a 'barrier', everything to the left is greater than the
     # pivot, everything to the right is less than or equal to
     barrier_idx = start + 1
-    (start + 1).upto(length - 1) do |idx|
-      if prc.call(array[start], array[idx]) != -1 && barrier_idx < length
+    (length - 1).times do |num|
+      idx = num + start + 1
+      puts "--------------"
+      print "Index: "
+      puts idx
+      print "Start: "
+      puts array[start]
+      print "Eval: "
+      puts prc.call(array[start], array[idx])
+      puts "--------------"
+      if prc.call(array[start], array[idx]) != -1 && barrier_idx < (length + start)
         swap(array, barrier_idx, idx)
         barrier_idx += 1
       end
@@ -62,6 +70,8 @@ class QuickSort
     #be around the center of the elements. You then want to swap
     #the pivot(which should have been the first element) with the
     #element directly to the right of the barrier
+          print "Barrier Idx"
+          puts barrier_idx
     swap(array, barrier_idx - 1, start)
     puts "Array after Final Swap: "
     print array
